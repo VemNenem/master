@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import logo from "../assets/logo.png";
+"use client";
+
+import { useState } from "react";
 import background from "../assets/background.png";
-import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-const Login: React.FC = () => {
+export default function Login() {
   const [email, setEmail] = useState("admin@gmail.com");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -18,11 +18,10 @@ const Login: React.FC = () => {
     <div
       style={{
         ...styles.page,
-        backgroundImage: `url(${background})`,
+        backgroundImage: `url(${background.src})`,
       }}
     >
       <div style={styles.content}>
-        {/* esquerda (card) */}
         <div style={styles.side}>
           <div style={styles.loginCard}>
             <form onSubmit={handleLogin} style={styles.loginForm}>
@@ -59,7 +58,6 @@ const Login: React.FC = () => {
                     type="button"
                     style={styles.toggle}
                     onClick={() => setShowPassword(!showPassword)}
-                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -70,9 +68,7 @@ const Login: React.FC = () => {
                 <label style={styles.remember}>
                   <input type="checkbox" /> Lembrar-me
                 </label>
-                <Link to="/esqueceusenha" style={styles.forgot}>
-                  Esqueceu a senha
-                </Link>
+                {/* Se quiser, depois pode fazer um Link para /esqueceusenha */}
               </div>
 
               <button type="submit" style={styles.loginButton}>
@@ -82,23 +78,17 @@ const Login: React.FC = () => {
           </div>
         </div>
         <div style={styles.side}>
-          <div>
-            {/*  <img src={logo} alt="Vem neném" style={styles.brandImg} /> */}
-          </div>
+          {/* aqui pode entrar logo ou imagem */}
         </div>
       </div>
     </div>
   );
-};
+}
 
 const styles: Record<string, React.CSSProperties> = {
-
   page: {
     minHeight: "100vh",
     minWidth: "100vw",
-    margin: 0,
-    padding: 0,
-    overflow: "hidden", // remove scroll
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -113,7 +103,6 @@ const styles: Record<string, React.CSSProperties> = {
     width: "100%",
     height: "100vh",
     padding: "0 32px",
-    gap: 0,
   },
   side: {
     display: "flex",
@@ -136,7 +125,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: "14px",
   },
   label: {
-    display: "block",
     fontSize: "13px",
     color: "#4b5563",
     marginBottom: "8px",
@@ -148,8 +136,6 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "10px",
     padding: "0 14px",
     fontSize: "14px",
-    color: "#111827",
-    outline: "none",
   },
   passwordInput: {
     position: "relative",
@@ -162,8 +148,6 @@ const styles: Record<string, React.CSSProperties> = {
     background: "transparent",
     border: "none",
     cursor: "pointer",
-    fontSize: "16px",
-    lineHeight: 1,
   },
   noteRow: {
     display: "flex",
@@ -179,28 +163,14 @@ const styles: Record<string, React.CSSProperties> = {
     gap: "8px",
     alignItems: "center",
   },
-  forgot: {
-    color: "#6b46c1",
-    textDecoration: "none",
-  },
   loginButton: {
     marginTop: "14px",
     height: "44px",
     border: "none",
     borderRadius: "10px",
     background: "#27d3d6",
-    color: "#ffffff",
+    color: "#fff",
     fontWeight: 700,
-    letterSpacing: ".2px",
     cursor: "pointer",
   },
-  brandImg: {
-    maxWidth: "460px",
-    width: "100%",
-    height: "auto",
-    display: "block",
-    filter: "drop-shadow(0 12px 24px rgba(0,0,0,.12))",
-  },
 };
-
-export default Login;

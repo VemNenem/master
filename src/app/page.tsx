@@ -5,20 +5,25 @@ import Link from "next/link";
 import logo from "./assets/logo.png";
 import heroImg from "./assets/header.png";
 import mockup from "./assets/mockup.png";
+import lojas from "./assets/lojas.png";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
   return (
     <main style={styles.container}>
 
       <header style={styles.navbar}>
         <div style={styles.logoContainer}>
-          <Image src={logo} alt="Logo" width={40} height={40} />
+          <Image src={logo} alt="Logo" width={60} height={60} />
         </div>
-        <nav style={styles.nav}>
-          <Link href="/shop" style={styles.ctaShop}>
+          <button
+            style={styles.ctaShop}
+            onClick={() => router.push("/login")} 
+          >
             Entrar
-          </Link>
-        </nav>
+          </button>
       </header>
 
 
@@ -45,9 +50,9 @@ export default function Home() {
             <h3 style={styles.featureTitle}>Agenda</h3>
             <p style={styles.featureDescription}>Organize seus compromissos e eventos importantes de forma prática. Receba lembretes, acompanhe datas e nunca perca um momento especial.</p>
           </div>
-          <div style={styles.featureCard}>
-            <h3 style={styles.featureTitle}>Plano de parto</h3>
-            <p style={styles.featureDescription}>Monte seu plano de parto personalizado, com tudo que você deseja para esse momento único. Tenha à mão cada detalhe e compartilhe com quem você confiar.</p>
+          <div style={styles.featureCardPlan}>
+            <h3 style={styles.featureTitlePlan}>Plano de parto</h3>
+            <p style={styles.featureDescriptionPlan}>Monte seu plano de parto personalizado, com tudo que você deseja para esse momento único. Tenha à mão cada detalhe e compartilhe com quem você confiar.</p>
           </div>
           <div style={styles.featureCard}>
             <h3 style={styles.featureTitle}>Minhas listas</h3>
@@ -58,10 +63,10 @@ export default function Home() {
 
 
       <section style={styles.downloadSection}>
-        <h2 style={styles.sectionTitle}>Baixe nosso app nas lojas</h2>
-        <p style={styles.downloadText}>Disponível na App Store e Google Play.</p>
+        <h2 style={styles.sectionTitle2}>Baixe nosso app nas lojas</h2>
+        <p style={styles.downloadText}>E conheça mais sobre nosso aplicativo.</p>
         <div style={styles.logoContainer}>
-          <Image src={logo} alt="Logo" width={40} height={40} />
+          <Image src={lojas} alt="Loja" width={200} height={200} />
         </div>
       </section>
 
@@ -71,6 +76,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
@@ -97,18 +103,16 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: "center",
     gap: "10px",
   },
-  nav: {
-    display: "flex",
-    gap: "20px",
-    alignItems: "center",
-  },
   ctaShop: {
-    backgroundColor: "#42cfe0",
-    color: "white",
-    padding: "10px 20px",
+    width: "200px",
+    marginTop: "14px",
+    height: "44px",
+    border: "none",
     borderRadius: "10px",
-    fontWeight: "bold",
-    textDecoration: "none",
+    background: "#27d3d6",
+    color: "#fff",
+    fontWeight: 700,
+    cursor: "pointer",
   },
   hero: {
     minHeight: "80vh",
@@ -153,7 +157,12 @@ const styles: { [key: string]: React.CSSProperties } = {
   sectionTitle: {
     fontSize: "32px",
     fontWeight: "bold",
-    color: "#ffffff",
+    color: "0 4px 8px rgba(0,0,0,0.1)",
+  },
+  sectionTitle2: {
+    fontSize: "32px",
+    fontWeight: "bold",
+    color: "#ffff",
   },
   featureCardsContainer: {
     display: "flex",
@@ -169,14 +178,32 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: "center",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
   },
+   featureCardPlan: {
+    backgroundColor: "#42CFE0",
+    padding: "30px",
+    borderRadius: "15px",
+    maxWidth: "250px",
+    textAlign: "center",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+  },
   featureTitle: {
     fontSize: "20px",
     fontWeight: "bold",
     marginBottom: "15px",
   },
+    featureTitlePlan: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginBottom: "15px",
+    color: "#fff",
+  },
   featureDescription: {
     fontSize: "14px",
     color: "#555",
+  },
+    featureDescriptionPlan: {
+    fontSize: "14px",
+    color: "#ffffffff",
   },
   downloadSection: {
     display: 'flex',
@@ -184,7 +211,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
     justifyContent: 'center',
     width: '50%',      
-    padding: '20px',
+    padding: '50px',
     margin: '50px auto',
     borderRadius: '15px', 
     textAlign: 'center', 
@@ -195,6 +222,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: "16px",
     marginTop: "20px",
     color: "#ffffff",
+    fontWeight:"bold",
   },
   footer: {
     marginTop: "80px",
