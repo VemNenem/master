@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import logo from "./assets/logo.png";
 import heroImg from "./assets/header.png";
 import mockup from "./assets/mockup.png";

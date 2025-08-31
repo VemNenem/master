@@ -2,16 +2,22 @@
 
 import { useState } from "react";
 import background from "../assets/background.png";
+import logo from "../assets/logo.png"; 
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation"; 
+import Image from "next/image"; 
 
 export default function Login() {
-  const [email, setEmail] = useState("admin@gmail.com");
+  const router = useRouter();
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login attempt:", { email, password });
+    
+    router.push("/usuarios");
   };
 
   return (
@@ -24,6 +30,18 @@ export default function Login() {
       <div style={styles.content}>
         <div style={styles.side}>
           <div style={styles.loginCard}>
+            <div style={styles.logoMobile}>
+              <Image 
+                src={logo} 
+                alt="Logo" 
+                width={150} 
+                height={60}
+                style={styles.logoImage}
+              />
+            </div>
+            
+            <h1 style={styles.title}>Faça seu login</h1>
+            
             <form onSubmit={handleLogin} style={styles.loginForm}>
               <div style={{ marginTop: 0 }}>
                 <label htmlFor="email" style={styles.label}>
@@ -68,7 +86,9 @@ export default function Login() {
                 <label style={styles.remember}>
                   <input type="checkbox" /> Lembrar-me
                 </label>
-                {/* Se quiser, depois pode fazer um Link para /esqueceusenha */}
+                <a href="#" style={styles.forgotPassword}>
+                  Esqueci minha senha
+                </a>
               </div>
 
               <button type="submit" style={styles.loginButton}>
@@ -77,8 +97,21 @@ export default function Login() {
             </form>
           </div>
         </div>
+
         <div style={styles.side}>
-          {/* aqui pode entrar logo ou imagem */}
+          <div style={styles.logoContainer}>
+            <Image 
+              src={logo} 
+              alt="Logo Vem Nenem Master" 
+              width={250}
+              height={100}
+              style={styles.logoImage}
+              priority
+            />
+            <p style={styles.welcomeText}>
+              Bem-vindo ao sistema de gerenciamento
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -95,6 +128,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontFamily: "Arial, sans-serif",
     backgroundSize: "cover",
     backgroundPosition: "center",
+    backgroundColor: "#f8fafc",
   },
   content: {
     display: "grid",
@@ -103,11 +137,13 @@ const styles: Record<string, React.CSSProperties> = {
     width: "100%",
     height: "100vh",
     padding: "0 32px",
+    alignItems: "center",
   },
   side: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    padding: "20px",
   },
   loginCard: {
     background: "#ffffff",
@@ -115,27 +151,47 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: "0 12px 30px rgba(0,0,0,0.10)",
     width: "100%",
     maxWidth: "420px",
-    padding: "24px 24px 20px",
+    padding: "32px",
+  },
+  logoMobile: {
+    display: "none",
+    marginBottom: "20px",
+    textAlign: "center",
+  },
+  title: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    color: "#1f2937",
+    textAlign: "center",
+    marginBottom: "24px",
   },
   loginForm: {
     display: "flex",
     flexDirection: "column",
   },
   inputGroup: {
-    marginTop: "14px",
+    marginTop: "16px",
   },
   label: {
-    fontSize: "13px",
+    fontSize: "14px",
     color: "#4b5563",
     marginBottom: "8px",
+    fontWeight: "500",
   },
   input: {
     width: "100%",
-    height: "44px",
+    height: "48px",
     border: "1px solid #e5e7eb",
     borderRadius: "10px",
-    padding: "0 14px",
+    padding: "0 16px",
     fontSize: "14px",
+    backgroundColor: "#fff",
+    transition: "border-color 0.2s",
+    color: "#1f2937",
+  },
+  inputFocus: {
+    borderColor: "#27d3d6",
+    outline: "none",
   },
   passwordInput: {
     position: "relative",
@@ -148,29 +204,54 @@ const styles: Record<string, React.CSSProperties> = {
     background: "transparent",
     border: "none",
     cursor: "pointer",
+    color: "#6b7280",
   },
   noteRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: "10px",
-    padding: "0 2px",
-    fontSize: "12px",
+    marginTop: "16px",
+    fontSize: "14px",
     color: "#6b7280",
   },
   remember: {
     display: "inline-flex",
     gap: "8px",
     alignItems: "center",
+    cursor: "pointer",
+  },
+  forgotPassword: {
+    color: "#27d3d6",
+    textDecoration: "none",
+    fontSize: "14px",
   },
   loginButton: {
-    marginTop: "14px",
-    height: "44px",
+    marginTop: "24px",
+    height: "48px",
     border: "none",
     borderRadius: "10px",
     background: "#27d3d6",
     color: "#fff",
     fontWeight: 700,
     cursor: "pointer",
+    fontSize: "16px",
+    transition: "background-color 0.2s",
+  },
+  loginButtonHover: {
+    backgroundColor: "#1fb4b7",
+  },
+  logoContainer: {
+    textAlign: "center",
+    padding: "40px",
+  },
+  logoImage: {
+    objectFit: "contain",
+    marginBottom: "20px",
+  },
+  welcomeText: {
+    fontSize: "18px",
+    color: "#374151",
+    fontWeight: "500",
+    marginTop: "16px",
   },
 };
