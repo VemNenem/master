@@ -40,3 +40,25 @@ a {
     color-scheme: dark;
   }
 }
+
+.scrollBox {
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: #111; 
+  color: #fff;   
+  border-radius: 10px;
+}
+
+.scrollBox::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollBox::-webkit-scrollbar-thumb {
+  background-color: #21FFB5; 
+  border-radius: 10px;
+}
+
+.scrollBox::-webkit-scrollbar-track {
+  background: #222;
+}
