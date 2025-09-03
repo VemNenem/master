@@ -173,5 +173,7 @@ const style: { [key: string]: React.CSSProperties } = {
     fontWeight: "bold",
     cursor: "pointer",
     textTransform: "uppercase",
+    width: "300px",
+    margin: "0 auto",
   },
 };
