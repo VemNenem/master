@@ -39,9 +39,7 @@ export default function Login() {
                 style={styles.logoImage}
               />
             </div>
-            
-            <h1 style={styles.title}>Faça seu login</h1>
-            
+                       
             <form onSubmit={handleLogin} style={styles.loginForm}>
               <div style={{ marginTop: 0 }}>
                 <label htmlFor="email" style={styles.label}>
@@ -103,14 +101,11 @@ export default function Login() {
             <Image 
               src={logo} 
               alt="Logo Vem Nenem Master" 
-              width={250}
-              height={100}
+              width={500}
+              height={500}
               style={styles.logoImage}
               priority
             />
-            <p style={styles.welcomeText}>
-              Bem-vindo ao sistema de gerenciamento
-            </p>
           </div>
         </div>
       </div>

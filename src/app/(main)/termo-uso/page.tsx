@@ -1,101 +1,116 @@
 "use client";
+import { useState } from "react";
+import SuccessPopup from "../../components/sucessPopup";
 
 export default function TermoPage() {
+  const [popupTrigger, setPopupTrigger] = useState(0);
+
+  const handleCadastrar = () => {
+    setPopupTrigger(prev => prev + 1); 
+  };
+
   return (
     <main style={style.container}>
       <h2 style={style.title}>Termo de uso</h2>
 
       <div style={style.cards}>
-
         <div style={style.column}>
           <h3 style={style.cardTitle}>Termo de uso</h3>
           <div style={style.card} className="scroll-box">
             <p style={style.text}>
- 1. Coleta de Informações
-Coletamos dados pessoais fornecidos pelo usuário durante o cadastro e uso da plataforma, como nome, e-mail e informações de acesso.
+              Aceitação dos Termos
+              Ao utilizar este serviço, você concorda com estes Termos de Uso.
 
-2. Uso das Informações
-Os dados são utilizados para fornecer e melhorar os serviços, personalizar a experiência e enviar comunicações relevantes.
+              Cadastro
+              É necessário criar uma conta para acessar algumas funcionalidades. Forneça informações verdadeiras.
 
-3. Compartilhamento de Dados
-Não compartilhamos informações pessoais com terceiros, exceto quando exigido por lei ou para prestação de serviços essenciais.
+              Uso do Serviço
+              O serviço deve ser usado apenas para fins legais e pessoais.
 
-4. Segurança
-Adotamos medidas técnicas e organizacionais para proteger os dados contra acesso não autorizado, perda ou alteração.
+              Propriedade Intelectual
+              Todo conteúdo do serviço é protegido por direitos autorais e marcas registradas.
 
-5. Direitos do Usuário
-O usuário pode solicitar a exclusão, atualização ou acesso às suas informações a qualquer momento através do suporte.
-1. Coleta de Informações
-Coletamos dados pessoais fornecidos pelo usuário durante o cadastro e uso da plataforma, como nome, e-mail e informações de acesso.
+              Conteúdo do Usuário
+              Você é responsável pelo conteúdo que envia, publica ou compartilha.
 
-2. Uso das Informações
-Os dados são utilizados para fornecer e melhorar os serviços, personalizar a experiência e enviar comunicações relevantes.
+              Proibições
+              Não é permitido transmitir vírus, spam ou conteúdos ilegais.
 
-3. Compartilhamento de Dados
-Não compartilhamos informações pessoais com terceiros, exceto quando exigido por lei ou para prestação de serviços essenciais.
+              Modificações do Serviço
+              O serviço pode ser alterado, suspenso ou descontinuado a qualquer momento.
 
-4. Segurança
-Adotamos medidas técnicas e organizacionais para proteger os dados contra acesso não autorizado, perda ou alteração.
+              Privacidade
+              O uso do serviço está sujeito à Política de Privacidade.
 
-5. Direitos do Usuário
-O usuário pode solicitar a exclusão, atualização ou acesso às suas informações a qualquer momento através do suporte.
+              Rescisão
+              Podemos encerrar ou suspender contas que violem os termos.
 
+              Limitação de Responsabilidade
+              O serviço não se responsabiliza por danos diretos ou indiretos decorrentes do uso.
+
+              Indenização
+              Você concorda em indenizar o serviço por quaisquer reclamações decorrentes do seu uso.
+
+              Legislação Aplicável
+              Estes termos são regidos pelas leis do país de operação do serviço.
             </p>
           </div>
-          <button style={style.button}>CADASTRAR</button>
+          <button style={style.button} onClick={handleCadastrar}>
+            CADASTRAR
+          </button>
         </div>
 
         <div style={style.column}>
           <h3 style={style.cardTitle}>Política de privacidade</h3>
           <div style={style.card} className="scroll-box">
             <p style={style.text}>
-              1. Coleta de Informações
-Coletamos dados pessoais fornecidos pelo usuário durante o cadastro e uso da plataforma, como nome, e-mail e informações de acesso.
+              Coleta de Dados
+              Podemos coletar dados pessoais e de uso para fornecer e melhorar o serviço.
 
-2. Uso das Informações
-Os dados são utilizados para fornecer e melhorar os serviços, personalizar a experiência e enviar comunicações relevantes.
+              Tipos de Dados
+              Coletamos nome, e-mail, preferências, histórico de acesso e informações técnicas do dispositivo.
 
-3. Compartilhamento de Dados
-Não compartilhamos informações pessoais com terceiros, exceto quando exigido por lei ou para prestação de serviços essenciais.
+              Uso de Dados
+              Os dados são usados para personalizar a experiência e enviar informações relevantes.
 
-4. Segurança
-Adotamos medidas técnicas e organizacionais para proteger os dados contra acesso não autorizado, perda ou alteração.
+              Compartilhamento de Dados
+              Não compartilhamos seus dados com terceiros sem consentimento, exceto por obrigação legal.
 
-5. Direitos do Usuário
-O usuário pode solicitar a exclusão, atualização ou acesso às suas informações a qualquer momento através do suporte.
-1. Coleta de Informações
-Coletamos dados pessoais fornecidos pelo usuário durante o cadastro e uso da plataforma, como nome, e-mail e informações de acesso.
+              Segurança
+              Implementamos medidas de proteção para evitar acesso não autorizado ou perda de dados.
 
-2. Uso das Informações
-Os dados são utilizados para fornecer e melhorar os serviços, personalizar a experiência e enviar comunicações relevantes.
+              Armazenamento
+              Seus dados são armazenados de forma segura pelos períodos necessários para prestação do serviço.
 
-3. Compartilhamento de Dados
-Não compartilhamos informações pessoais com terceiros, exceto quando exigido por lei ou para prestação de serviços essenciais.
+              Cookies
+              Usamos cookies e tecnologias semelhantes para melhorar a navegação e analisar tendências.
 
-4. Segurança
-Adotamos medidas técnicas e organizacionais para proteger os dados contra acesso não autorizado, perda ou alteração.
+              Marketing e Comunicação
+              Podemos enviar e-mails ou notificações com informações sobre o serviço ou promoções.
 
-5. Direitos do Usuário
-O usuário pode solicitar a exclusão, atualização ou acesso às suas informações a qualquer momento através do suporte.
-1. Coleta de Informações
-Coletamos dados pessoais fornecidos pelo usuário durante o cadastro e uso da plataforma, como nome, e-mail e informações de acesso.
+              Direitos do Usuário
+              Você pode acessar, corrigir ou solicitar a exclusão de seus dados pessoais.
 
-2. Uso das Informações
-Os dados são utilizados para fornecer e melhorar os serviços, personalizar a experiência e enviar comunicações relevantes.
+              Menores de Idade
+              O serviço não é destinado a menores sem consentimento dos responsáveis.
 
-3. Compartilhamento de Dados
-Não compartilhamos informações pessoais com terceiros, exceto quando exigido por lei ou para prestação de serviços essenciais.
+              Alterações na Política
+              Esta política pode ser atualizada periodicamente; recomendamos revisão regular.
 
-4. Segurança
-Adotamos medidas técnicas e organizacionais para proteger os dados contra acesso não autorizado, perda ou alteração.
-
-5. Direitos do Usuário
-O usuário pode solicitar a exclusão, atualização ou acesso às suas informações a qualquer momento através do suporte.
+              Contato
+              Para dúvidas sobre a política de privacidade, entre em contato com nosso suporte.
             </p>
           </div>
-          <button style={style.button}>CADASTRAR</button>
+          <button style={style.button} onClick={handleCadastrar}>
+            CADASTRAR
+          </button>
         </div>
       </div>
+
+      <SuccessPopup 
+        message="Cadastro realizado com sucesso!" 
+        trigger={popupTrigger} 
+      />
 
       <style jsx>{`
         .scroll-box::-webkit-scrollbar {

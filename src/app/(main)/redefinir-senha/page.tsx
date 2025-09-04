@@ -1,8 +1,15 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
+import SuccessPopup from "../../components/sucessPopup";
 
 export default function RedefinirSenha() {
+  const [popupTrigger, setPopupTrigger] = useState(0);
+
+  const handleCadastrar = () => {
+    setPopupTrigger(prev => prev + 1); 
+  };
+
   return (
     <main style={style.container}>
       <h2 style={style.title}>Redefinir senha</h2>
@@ -22,8 +29,13 @@ export default function RedefinirSenha() {
         <label style={style.label}>Confirmar nova senha</label>
         <input type="password" placeholder="*******" style={style.input} />
 
-        <button style={style.button}>ALTERAR SENHA</button>
+        <button style={style.button} onClick={handleCadastrar}>ALTERAR SENHA</button>
       </div>
+
+      <SuccessPopup 
+        message="Senha atualizada com sucesso!" 
+        trigger={popupTrigger} 
+      />
     </main>
   );
 }
