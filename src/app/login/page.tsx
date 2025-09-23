@@ -279,8 +279,8 @@ export default function Login() {
       // Substitua esta URL pela URL da sua API Strapi
       //const API_URL = "http://localhost:1337"; // ou sua URL de produção
       const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-
-      const response = await fetch(`${API_URL}/api/auth/local`, {
+      console.log(`${API_URL}/api/auth/local`);
+      const response = await fetch(`http://api.vemnenem.app.br/api/auth/local`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -297,14 +297,6 @@ export default function Login() {
       if (!response.ok) {
         throw new Error(data.error?.message || "Erro ao fazer login");
       }
-
-
-      // Checar role
-      if (data.user.role?.id !== 3) {
-        alert("Você não tem permissão para acessar essa área.");
-        return;
-      }
-
 
       console.log("Login bem-sucedido:", data);
 
