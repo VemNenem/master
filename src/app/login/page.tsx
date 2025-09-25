@@ -254,7 +254,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import background from "../assets/background.png";
 import logo from "../assets/logo.png";
 import { Eye, EyeOff } from "lucide-react";
@@ -267,7 +267,13 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [bgLoaded, setBgLoaded] = useState(false);
+
   const role = 3;
+
+  useEffect(() => {
+    setBgLoaded(true);
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,20 +282,11 @@ export default function Login() {
     try {
       console.log("Tentativa de login:", { email, password, role });
 
-      // Substitua esta URL pela URL da sua API Strapi
-      //const API_URL = "http://localhost:1337"; // ou sua URL de produção
-      const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-      console.log(`${API_URL}/api/auth/local`);
-      const response = await fetch(`http://api.vemnenem.app.br/api/auth/local`, {
+      const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://api.vemnenem.app.br";
+      const response = await fetch(`${API_URL}/api/auth/local`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          identifier: email,
-          password: password,
-          role: role
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identifier: email, password, role }),
       });
 
       const data = await response.json();
@@ -299,43 +296,30 @@ export default function Login() {
       }
 
       console.log("Login bem-sucedido:", data);
-
-      // Salvar o token JWT no localStorage (ou sessionStorage)
       localStorage.setItem("token", data.jwt);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirecionar para a página de usuários
-      setTimeout(() => {
-        router.push("/usuarios");
-      }, 2000);
-
- } catch (error: unknown) {
-  console.error("Erro no login:", error);
-  if (error instanceof Error) {
-    alert(`Erro no login: ${error.message}`);
-  } else {
-    alert("Erro no login: erro desconhecido");
-  }
+      setTimeout(() => router.push("/usuarios"), 500);
+    } catch (error: unknown) {
+      console.error("Erro no login:", error);
+      if (error instanceof Error) alert(`Erro no login: ${error.message}`);
+      else alert("Erro no login: erro desconhecido");
+      setIsLoading(false);
+    }
   };
 
   return (
     <div
       style={{
         ...styles.page,
-        backgroundImage: `url(${background.src})`,
+        backgroundImage: bgLoaded ? `url(${background.src})` : undefined,
       }}
     >
       <div style={styles.content}>
         <div style={styles.side}>
           <div style={styles.loginCard}>
             <div style={styles.logoMobile}>
-              <Image
-                src={logo}
-                alt="Logo"
-                width={150}
-                height={60}
-                style={styles.logoImage}
-              />
+              <Image src={logo} alt="Logo" width={150} height={60} style={styles.logoImage} />
             </div>
 
             <form onSubmit={handleLogin} style={styles.loginForm}>
@@ -385,9 +369,6 @@ export default function Login() {
                 <label style={styles.remember}>
                   <input type="checkbox" disabled={isLoading} /> Lembrar-me
                 </label>
-                <a href="#" style={styles.forgotPassword}>
-                  Esqueci minha senha
-                </a>
               </div>
 
               <button
@@ -462,13 +443,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: "20px",
     textAlign: "center",
   },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    color: "#1f2937",
-    textAlign: "center",
-    marginBottom: "24px",
-  },
   loginForm: {
     display: "flex",
     flexDirection: "column",
@@ -493,13 +467,7 @@ const styles: Record<string, React.CSSProperties> = {
     transition: "border-color 0.2s",
     color: "#1f2937",
   },
-  inputFocus: {
-    borderColor: "#27d3d6",
-    outline: "none",
-  },
-  passwordInput: {
-    position: "relative",
-  },
+  passwordInput: { position: "relative" },
   toggle: {
     position: "absolute",
     right: "12px",
@@ -518,17 +486,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "14px",
     color: "#6b7280",
   },
-  remember: {
-    display: "inline-flex",
-    gap: "8px",
-    alignItems: "center",
-    cursor: "pointer",
-  },
-  forgotPassword: {
-    color: "#27d3d6",
-    textDecoration: "none",
-    fontSize: "14px",
-  },
+  remember: { display: "inline-flex", gap: "8px", alignItems: "center", cursor: "pointer" },
+  forgotPassword: { color: "#27d3d6", textDecoration: "none", fontSize: "14px" },
   loginButton: {
     marginTop: "24px",
     height: "48px",
@@ -541,22 +500,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "16px",
     transition: "background-color 0.2s",
   },
-  loginButtonHover: {
-    backgroundColor: "#1fb4b7",
-  },
-  logoContainer: {
-    textAlign: "center",
-    padding: "40px",
-  },
-  logoImage: {
-    objectFit: "contain",
-    marginBottom: "20px",
-  },
-  welcomeText: {
-    fontSize: "18px",
-    color: "#374151",
-    fontWeight: "500",
-    marginTop: "16px",
-  },
-};
+  logoContainer: { textAlign: "center", padding: "40px" },
+  logoImage: { objectFit: "contain", marginBottom: "20px" },
 };
