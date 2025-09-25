@@ -309,12 +309,13 @@ export default function Login() {
         router.push("/usuarios");
       }, 2000);
 
-    } catch (error: any) {
-      console.error("Erro no login:", error);
-      alert(`Erro no login: ${error.message}`);
-    } finally {
-      setIsLoading(false);
-    }
+ } catch (error: unknown) {
+  console.error("Erro no login:", error);
+  if (error instanceof Error) {
+    alert(`Erro no login: ${error.message}`);
+  } else {
+    alert("Erro no login: erro desconhecido");
+  }
   };
 
   return (
@@ -557,4 +558,5 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: "500",
     marginTop: "16px",
   },
+};
 };

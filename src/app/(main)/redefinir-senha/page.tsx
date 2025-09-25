@@ -22,7 +22,7 @@ export default function RedefinirSenha() {
         <input type="password" placeholder="*******" style={style.input} />
         <ul style={style.rules}>
           <li>Use pelo menos 8 caracteres</li>
-          <li>Inclua pelo menos 1 letra minúscula, 1 maiúscula e 1 caractere especial, como "-!*</li>
+          <li>Inclua pelo menos 1 letra minúscula, 1 maiúscula e 1 caractere especial, como &quot;-!*&quot;</li>
           <li>Certifique-se de usar uma senha forte</li>
         </ul>
 
