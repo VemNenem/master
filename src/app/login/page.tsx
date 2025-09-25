@@ -282,7 +282,7 @@ export default function Login() {
     try {
       console.log("Tentativa de login:", { email, password, role });
 
-      const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://api.vemnenem.app.br";
+      const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || "https://api.vemnenem.app.br";
       const response = await fetch(`${API_URL}/api/auth/local`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
