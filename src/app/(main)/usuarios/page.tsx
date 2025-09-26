@@ -9,6 +9,10 @@ export default function ListagemUsuarios() {
     { id: 2, name: "Bryan", email: "***********@gmail.com", active: true },
     { id: 3, name: "Micaela", email: "***********@gmail.com", active: true },
     { id: 4, name: "Lucas", email: "***********@gmail.com", active: true },
+    { id: 1, name: "Julia", email: "***********@gmail.com", active: true },
+    { id: 2, name: "Bryan", email: "***********@gmail.com", active: true },
+    { id: 3, name: "Micaela", email: "***********@gmail.com", active: true },
+    { id: 4, name: "Lucas", email: "***********@gmail.com", active: true },
   ]);
 
   const toggleActive = (id: number) => {
@@ -32,7 +36,8 @@ export default function ListagemUsuarios() {
           <span>Email</span>
           <span style={{ textAlign: "center" }}>Ação</span>
         </div>
-        <div style={style.table}>
+
+        <div className="scroll-box" style={style.table}>
           {users.map((user) => (
             <div key={user.id} style={style.row}>
               <span>{user.name}</span>
@@ -55,6 +60,28 @@ export default function ListagemUsuarios() {
           ))}
         </div>
       </section>
+
+      <style jsx>{`
+        .scroll-box {
+          max-height: 500px;
+          overflow-y: auto;
+          padding-right: 10px;
+        }
+        .scroll-box::-webkit-scrollbar {
+          width: 8px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb {
+          background: #00c5b5;
+          border-radius: 6px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+          background: #009e91;
+        }
+        .scroll-box::-webkit-scrollbar-track {
+          background: #f0f0f0;
+          border-radius: 6px;
+        }
+      `}</style>
     </main>
   );
 }

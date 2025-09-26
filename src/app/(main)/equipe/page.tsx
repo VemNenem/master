@@ -8,6 +8,10 @@ export default function Equipe() {
     { id: 2, name: "Bryan", email: "bryan@gmail.com" },
     { id: 3, name: "Micaela", email: "micaela@gmail.com" },
     { id: 4, name: "Lucas", email: "lucas@gmail.com" },
+       { id: 1, name: "Julia", email: "julia@gmail.com" },
+    { id: 2, name: "Bryan", email: "bryan@gmail.com" },
+    { id: 3, name: "Micaela", email: "micaela@gmail.com" },
+    { id: 4, name: "Lucas", email: "lucas@gmail.com" },
   ]);
 
   const deleteMember = (id: number) => {
@@ -41,7 +45,7 @@ export default function Equipe() {
           <span style={{ textAlign: "center" }}>Ação</span>
         </div>
 
-        <div style={style.table}>
+        <div className="scroll-box" style={style.table}>
           {team.map((member) => (
             <div key={member.id} style={style.row}>
               <span>{member.name}</span>
@@ -58,6 +62,28 @@ export default function Equipe() {
           ))}
         </div>
       </section>
+
+      <style jsx>{`
+        .scroll-box {
+          max-height: 500px;
+          overflow-y: auto;
+          padding-right: 10px;
+        }
+        .scroll-box::-webkit-scrollbar {
+          width: 8px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb {
+          background: #00c5b5;
+          border-radius: 6px;
+        }
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+          background: #009e91;
+        }
+        .scroll-box::-webkit-scrollbar-track {
+          background: #f0f0f0;
+          border-radius: 6px;
+        }
+      `}</style>
     </main>
   );
 }
