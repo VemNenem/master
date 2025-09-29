@@ -9,6 +9,7 @@ interface CadastroModalProps {
 
 export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,6 +26,16 @@ export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
+
+        <label style={styles.label}>Nome</label>
+        <input
+          type="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Bryan"
+          style={styles.input}
+        />
+
         <label style={styles.label}>E-mail</label>
         <input
           type="email"
