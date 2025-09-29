@@ -41,7 +41,7 @@ export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="admin@gmail.com"
+          placeholder="usuario@gmail.com"
           style={styles.input}
         />
 
