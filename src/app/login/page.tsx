@@ -41,7 +41,7 @@ export default function Login() {
         if (data?.error?.message?.includes("Invalid identifier")) {
           setErrors({ email: "Email inválido", password: "Senha inválida" });
         } else {
-          setErrors({ email: "Erro no login. Verifique suas credenciais." });
+          setErrors({ email: "Erro no login. Verifique suas credenciais.", password: "Erro no login. Verifique suas credenciais.",});
         }
         throw new Error(data.error?.message || "Erro ao fazer login");
       }
@@ -84,7 +84,7 @@ export default function Login() {
                     ...styles.input,
                     backgroundColor: "#fff",
                     color: "#000",
-                    borderColor: errors.email ? "red" : "#e5e7eb",
+                    borderColor: errors.email ? "#F67173" : "#e5e7eb",
                   }}
                   disabled={isLoading}
                 />
@@ -109,7 +109,7 @@ export default function Login() {
                       ...styles.input,
                       backgroundColor: "#fff",
                       color: "#000",
-                      borderColor: errors.password ? "red" : "#e5e7eb",
+                      borderColor: errors.password ? "#F67173" : "#e5e7eb",
                     }}
                     disabled={isLoading}
                   />
@@ -143,7 +143,7 @@ export default function Login() {
                 type="submit"
                 style={{
                   ...styles.loginButton,
-                  backgroundColor: isLoading ? "#94a3b8" : "#27d3d6",
+                  backgroundColor: isLoading ? "#00a0a3" : "#27d3d6",
                   cursor: isLoading ? "not-allowed" : "pointer",
                 }}
                 disabled={isLoading}
@@ -238,7 +238,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   errorText: {
     fontSize: "12px",
-    color: "red",
+    color: "#F67173",
     marginTop: "4px",
     display: "block",
   },
