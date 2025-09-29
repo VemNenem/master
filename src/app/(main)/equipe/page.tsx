@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
+import CadastroModal from "./../../components/cadastromodal"; 
 
 export default function Equipe() {
   const [team, setTeam] = useState([
@@ -8,25 +9,16 @@ export default function Equipe() {
     { id: 2, name: "Bryan", email: "bryan@gmail.com" },
     { id: 3, name: "Micaela", email: "micaela@gmail.com" },
     { id: 4, name: "Lucas", email: "lucas@gmail.com" },
-       { id: 1, name: "Julia", email: "julia@gmail.com" },
-    { id: 2, name: "Bryan", email: "bryan@gmail.com" },
-    { id: 3, name: "Micaela", email: "micaela@gmail.com" },
-    { id: 4, name: "Lucas", email: "lucas@gmail.com" },
   ]);
+
+  const [showModal, setShowModal] = useState(false);
 
   const deleteMember = (id: number) => {
     setTeam((prev) => prev.filter((member) => member.id !== id));
   };
 
-  const addMember = () => {
-    const name = prompt("Digite o nome:");
-    const email = prompt("Digite o email:");
-    if (name && email) {
-      setTeam((prev) => [
-        ...prev,
-        { id: Date.now(), name, email },
-      ]);
-    }
+  const addMember = (name: string, email: string) => {
+    setTeam((prev) => [...prev, { id: Date.now(), name, email }]);
   };
 
   return (
@@ -34,7 +26,7 @@ export default function Equipe() {
       <section style={style.content}>
         <div style={style.titleRow}>
           <h2 style={style.title}>Equipe</h2>
-          <button style={style.addButton} onClick={addMember}>
+          <button style={style.addButton} onClick={() => setShowModal(true)}>
             <Plus size={18} color="#707070" />
           </button>
         </div>
@@ -63,27 +55,8 @@ export default function Equipe() {
         </div>
       </section>
 
-      <style jsx>{`
-        .scroll-box {
-          max-height: 70%;
-          overflow-y: auto;
-          padding-right: 10px;
-        }
-        .scroll-box::-webkit-scrollbar {
-          width: 8px;
-        }
-        .scroll-box::-webkit-scrollbar-thumb {
-          background: #00c5b5;
-          border-radius: 6px;
-        }
-        .scroll-box::-webkit-scrollbar-thumb:hover {
-          background: #009e91;
-        }
-        .scroll-box::-webkit-scrollbar-track {
-          background: #f0f0f0;
-          border-radius: 6px;
-        }
-      `}</style>
+
+      <CadastroModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </main>
   );
 }
@@ -114,8 +87,8 @@ const style = {
     border: "1px solid #707070",
     background: "transparent",
     borderRadius: "50%",
-    width: "20px",
-    height: "20px",
+    width: "30px",
+    height: "30px",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",

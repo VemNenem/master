@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
-import Image from "next/image"; // ✅ Import do Image do Next.js
+import Image from "next/image";
 import logo from "@/app/assets/logo.png";
 
 export default function Blog() {
