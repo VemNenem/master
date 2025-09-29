@@ -65,7 +65,7 @@ export default function Equipe() {
 
       <style jsx>{`
         .scroll-box {
-          max-height: 500px;
+          max-height: 70%;
           overflow-y: auto;
           padding-right: 10px;
         }
