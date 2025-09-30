@@ -193,8 +193,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import SuccessPopup from "../../components/sucessPopup";
-import ErrorPopup from "../../components/errorPopup"; // Assumindo que você vai criar este componente
-import { redefinirSenha } from "./redefinirSenhaService";
+import ErrorPopup from "../../components/errorPopup";
+import { redefinirSenha } from "./../../services/redefinirSenhaService";
 
 export default function RedefinirSenha() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
