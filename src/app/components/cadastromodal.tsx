@@ -1,39 +1,83 @@
 "use client";
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { FormData } from "@/app/services/equipeService"; // ajuste o caminho
 
 interface CadastroModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubmit: (formData: FormData) => Promise<{ success: boolean; message?: string }>;
 }
 
-export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
+export default function CadastroModal({ isOpen, onClose, onSubmit }: CadastroModalProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
-  const handleCadastrar = () => {
-    // Aqui você pode adicionar lógica para enviar os dados
-    console.log("Email:", email, "Senha:", password);
+  const handleCadastrar = async () => {
+    // Validação básica
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError("Todos os campos são obrigatórios");
+      return;
+    }
 
-    // Fecha o modal
-    onClose();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await onSubmit({ name, email, password });
+
+      if (result.success) {
+        // Limpa os campos
+        setName("");
+        setEmail("");
+        setPassword("");
+        setShowPassword(false);
+        onClose();
+      } else {
+        setError(result.message || "Erro ao cadastrar usuário");
+      }
+    } catch (err) {
+      setError("Erro ao cadastrar usuário");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    if (!loading) {
+      setName("");
+      setEmail("");
+      setPassword("");
+      setShowPassword(false);
+      setError(null);
+      onClose();
+    }
   };
 
   return (
-    <div style={styles.overlay}>
-      <div style={styles.modal}>
+    <div style={styles.overlay} onClick={handleClose}>
+      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+
+        {error && (
+          <div style={styles.errorMessage}>
+            {error}
+          </div>
+        )}
 
         <label style={styles.label}>Nome</label>
         <input
-          type="name"
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Bryan"
           style={styles.input}
+          disabled={loading}
         />
 
         <label style={styles.label}>E-mail</label>
@@ -43,6 +87,7 @@ export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="usuario@gmail.com"
           style={styles.input}
+          disabled={loading}
         />
 
         <label style={styles.label}>Senha</label>
@@ -53,20 +98,33 @@ export default function CadastroModal({ isOpen, onClose }: CadastroModalProps) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
             style={styles.input}
+            disabled={loading}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             style={styles.toggle}
+            disabled={loading}
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
 
-        <button style={styles.primaryButton} onClick={handleCadastrar}>
-          CADASTRAR
+        <button
+          style={{
+            ...styles.primaryButton,
+            ...(loading ? styles.buttonDisabled : {})
+          }}
+          onClick={handleCadastrar}
+          disabled={loading}
+        >
+          {loading ? "CADASTRANDO..." : "CADASTRAR"}
         </button>
-        <button style={styles.secondaryButton} onClick={onClose}>
+        <button
+          style={styles.secondaryButton}
+          onClick={handleClose}
+          disabled={loading}
+        >
           VOLTAR
         </button>
       </div>
@@ -96,19 +154,27 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     gap: "12px",
   },
+  errorMessage: {
+    backgroundColor: "#fee",
+    color: "#c33",
+    padding: "10px 12px",
+    borderRadius: "8px",
+    fontSize: "14px",
+    marginBottom: "8px",
+  },
   label: {
     fontSize: "14px",
     fontWeight: 500,
-    color: "#000000", // label preto
+    color: "#000000",
   },
   input: {
     width: "100%",
     height: "40px",
-    border: "1px solid #ccc", // borda cinza
+    border: "1px solid #ccc",
     borderRadius: "8px",
     padding: "0 12px",
-    backgroundColor: "#ffffff", // fundo branco
-    color: "#000000", // texto preto
+    backgroundColor: "#ffffff",
+    color: "#000000",
     outline: "none",
   },
   toggle: {
@@ -139,5 +205,9 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: "8px",
     padding: "10px",
     cursor: "pointer",
+  },
+  buttonDisabled: {
+    backgroundColor: "#9dd",
+    cursor: "not-allowed",
   },
 };

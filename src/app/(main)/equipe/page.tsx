@@ -1,25 +1,77 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2, Plus } from "lucide-react";
-import CadastroModal from "./../../components/cadastromodal"; 
+import CadastroModal from "./../../components/cadastromodal";
+import { carregarUsuarios, criarUsuario, deletarUsuario, Usuario, FormData } from "@/app/services/equipeService";
 
 export default function Equipe() {
-  const [team, setTeam] = useState([
-    { id: 1, name: "Julia", email: "julia@gmail.com" },
-    { id: 2, name: "Bryan", email: "bryan@gmail.com" },
-    { id: 3, name: "Micaela", email: "micaela@gmail.com" },
-    { id: 4, name: "Lucas", email: "lucas@gmail.com" },
-  ]);
-
+  const [team, setTeam] = useState<Usuario[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const deleteMember = (id: number) => {
-    setTeam((prev) => prev.filter((member) => member.id !== id));
+  // Carregar usuários ao montar o componente
+  useEffect(() => {
+    loadTeamMembers();
+  }, []);
+
+  const loadTeamMembers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const usuarios = await carregarUsuarios();
+      setTeam(usuarios);
+    } catch (err) {
+      setError("Erro ao carregar equipe");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const addMember = (name: string, email: string) => {
-    setTeam((prev) => [...prev, { id: Date.now(), name, email }]);
+  const deleteMember = async (documentId: string) => {
+    if (!confirm("Tem certeza que deseja remover este membro?")) return;
+
+    try {
+      const success = await deletarUsuario(documentId);
+      if (success) {
+        setTeam((prev) => prev.filter((member) => member.documentId !== documentId));
+      } else {
+        alert("Erro ao deletar usuário. Tente novamente.");
+      }
+    } catch (err) {
+      console.error("Erro ao deletar:", err);
+      alert("Erro ao deletar usuário.");
+    }
   };
+
+  const addMember = async (formData: FormData) => {
+    try {
+      const result = await criarUsuario(formData);
+
+      if (result.success) {
+        // Recarrega a lista após adicionar
+        await loadTeamMembers();
+        setShowModal(false);
+        return { success: true };
+      } else {
+        return { success: false, message: result.message };
+      }
+    } catch (err) {
+      console.error("Erro ao adicionar:", err);
+      return { success: false, message: "Erro ao criar usuário." };
+    }
+  };
+
+  if (loading) {
+    return (
+      <main style={style.container}>
+        <section style={style.content}>
+          <p>Carregando equipe...</p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main style={style.container}>
@@ -31,6 +83,15 @@ export default function Equipe() {
           </button>
         </div>
 
+        {error && (
+          <div style={style.errorBanner}>
+            {error}
+            <button onClick={loadTeamMembers} style={style.retryButton}>
+              Tentar novamente
+            </button>
+          </div>
+        )}
+
         <div style={style.header}>
           <span>Nome</span>
           <span>Email</span>
@@ -38,25 +99,34 @@ export default function Equipe() {
         </div>
 
         <div className="scroll-box" style={style.table}>
-          {team.map((member) => (
-            <div key={member.id} style={style.row}>
-              <span>{member.name}</span>
-              <span>{member.email}</span>
-              <div style={style.actions}>
-                <button
-                  style={style.trashButton}
-                  onClick={() => deleteMember(member.id)}
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
+          {team.length === 0 ? (
+            <div style={style.emptyState}>
+              <p>Nenhum membro cadastrado ainda.</p>
             </div>
-          ))}
+          ) : (
+            team.map((member) => (
+              <div key={member.documentId} style={style.row}>
+                <span>{member.username}</span>
+                <span>{member.email}</span>
+                <div style={style.actions}>
+                  <button
+                    style={style.trashButton}
+                    onClick={() => deleteMember(member.documentId)}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
-
-      <CadastroModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <CadastroModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={addMember}
+      />
     </main>
   );
 }
@@ -93,6 +163,7 @@ const style = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    transition: "all 0.2s",
   },
   header: {
     display: "grid",
@@ -123,6 +194,31 @@ const style = {
     background: "none",
     border: "none",
     cursor: "pointer",
+    color: "#999",
+    transition: "color 0.2s",
+  },
+  errorBanner: {
+    backgroundColor: "#fee",
+    color: "#c33",
+    padding: "12px 20px",
+    borderRadius: "8px",
+    marginBottom: "20px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  retryButton: {
+    background: "transparent",
+    border: "1px solid #c33",
+    color: "#c33",
+    padding: "6px 12px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
+  emptyState: {
+    textAlign: "center" as const,
+    padding: "40px 20px",
     color: "#999",
   },
 } as const;
