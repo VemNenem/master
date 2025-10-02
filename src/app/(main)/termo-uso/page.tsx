@@ -1,115 +1,161 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SuccessPopup from "../../components/sucessPopup";
+import { listarTermos, atualizarTermos } from "@/app/services/termoService"; // ajuste o caminho
 
 export default function TermoPage() {
   const [popupTrigger, setPopupTrigger] = useState(0);
+  const [termoUso, setTermoUso] = useState("");
+  const [politicaPrivacidade, setPoliticaPrivacidade] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [loadingUse, setLoadingUse] = useState(false);
+  const [loadingPrivacy, setLoadingPrivacy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleCadastrar = () => {
-    setPopupTrigger(prev => prev + 1); 
+  // Carregar termos ao montar o componente
+  useEffect(() => {
+    loadTermos();
+  }, []);
+
+  const loadTermos = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [termoUseData, termoPrivacyData] = await Promise.all([
+        listarTermos("use"),
+        listarTermos("privacy"),
+      ]);
+
+      setTermoUso(termoUseData?.description || "");
+      setPoliticaPrivacidade(termoPrivacyData?.description || "");
+    } catch (err) {
+      setError("Erro ao carregar termos");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleCadastrarUso = async () => {
+    if (!termoUso.trim()) {
+      alert("O termo de uso não pode estar vazio");
+      return;
+    }
+
+    setLoadingUse(true);
+    try {
+      const result = await atualizarTermos("use", { description: termoUso });
+
+      if (result.success) {
+        setPopupTrigger(prev => prev + 1);
+        await loadTermos(); // Recarrega para garantir dados atualizados
+      } else {
+        alert(result.message || "Erro ao atualizar termo de uso");
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar:", err);
+      alert("Erro ao atualizar termo de uso");
+    } finally {
+      setLoadingUse(false);
+    }
+  };
+
+  const handleCadastrarPrivacidade = async () => {
+    if (!politicaPrivacidade.trim()) {
+      alert("A política de privacidade não pode estar vazia");
+      return;
+    }
+
+    setLoadingPrivacy(true);
+    try {
+      const result = await atualizarTermos("privacy", { description: politicaPrivacidade });
+
+      if (result.success) {
+        setPopupTrigger(prev => prev + 1);
+        await loadTermos(); // Recarrega para garantir dados atualizados
+      } else {
+        alert(result.message || "Erro ao atualizar política de privacidade");
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar:", err);
+      alert("Erro ao atualizar política de privacidade");
+    } finally {
+      setLoadingPrivacy(false);
+    }
+  };
+
+
+  if (loading) {
+    return (
+      <main style={style.container}>
+        <h2 style={style.title}>Termo de uso</h2>
+        <p style={{ color: "#707070" }}>Carregando termos...</p>
+      </main>
+    );
+  }
 
   return (
     <main style={style.container}>
       <h2 style={style.title}>Termo de uso</h2>
 
+      {error && (
+        <div style={style.errorBanner}>
+          {error}
+          <button onClick={loadTermos} style={style.retryButton}>
+            Tentar novamente
+          </button>
+        </div>
+      )}
+
       <div style={style.cards}>
         <div style={style.column}>
           <h3 style={style.cardTitle}>Termo de uso</h3>
-          <div style={style.card} className="scroll-box">
-            <p style={style.text}>
-              Aceitação dos Termos
-              Ao utilizar este serviço, você concorda com estes Termos de Uso.
-
-              Cadastro
-              É necessário criar uma conta para acessar algumas funcionalidades. Forneça informações verdadeiras.
-
-              Uso do Serviço
-              O serviço deve ser usado apenas para fins legais e pessoais.
-
-              Propriedade Intelectual
-              Todo conteúdo do serviço é protegido por direitos autorais e marcas registradas.
-
-              Conteúdo do Usuário
-              Você é responsável pelo conteúdo que envia, publica ou compartilha.
-
-              Proibições
-              Não é permitido transmitir vírus, spam ou conteúdos ilegais.
-
-              Modificações do Serviço
-              O serviço pode ser alterado, suspenso ou descontinuado a qualquer momento.
-
-              Privacidade
-              O uso do serviço está sujeito à Política de Privacidade.
-
-              Rescisão
-              Podemos encerrar ou suspender contas que violem os termos.
-
-              Limitação de Responsabilidade
-              O serviço não se responsabiliza por danos diretos ou indiretos decorrentes do uso.
-
-              Indenização
-              Você concorda em indenizar o serviço por quaisquer reclamações decorrentes do seu uso.
-
-              Legislação Aplicável
-              Estes termos são regidos pelas leis do país de operação do serviço.
-            </p>
-          </div>
-          <button style={style.button} onClick={handleCadastrar}>
-            CADASTRAR
+          <textarea
+            style={style.textarea}
+            className="scroll-box"
+            value={termoUso}
+            onChange={(e) => setTermoUso(e.target.value)}
+            placeholder="Digite o termo de uso aqui..."
+            disabled={loadingUse}
+          />
+          <button
+            style={{
+              ...style.button,
+              ...(loadingUse ? style.buttonDisabled : {}),
+            }}
+            onClick={handleCadastrarUso}
+            disabled={loadingUse}
+          >
+            {loadingUse ? "SALVANDO..." : "SALVAR"}
           </button>
         </div>
 
         <div style={style.column}>
           <h3 style={style.cardTitle}>Política de privacidade</h3>
-          <div style={style.card} className="scroll-box">
-            <p style={style.text}>
-              Coleta de Dados
-              Podemos coletar dados pessoais e de uso para fornecer e melhorar o serviço.
-
-              Tipos de Dados
-              Coletamos nome, e-mail, preferências, histórico de acesso e informações técnicas do dispositivo.
-
-              Uso de Dados
-              Os dados são usados para personalizar a experiência e enviar informações relevantes.
-
-              Compartilhamento de Dados
-              Não compartilhamos seus dados com terceiros sem consentimento, exceto por obrigação legal.
-
-              Segurança
-              Implementamos medidas de proteção para evitar acesso não autorizado ou perda de dados.
-
-              Armazenamento
-              Seus dados são armazenados de forma segura pelos períodos necessários para prestação do serviço.
-
-              Cookies
-              Usamos cookies e tecnologias semelhantes para melhorar a navegação e analisar tendências.
-
-              Marketing e Comunicação
-              Podemos enviar e-mails ou notificações com informações sobre o serviço ou promoções.
-
-              Direitos do Usuário
-              Você pode acessar, corrigir ou solicitar a exclusão de seus dados pessoais.
-
-              Menores de Idade
-              O serviço não é destinado a menores sem consentimento dos responsáveis.
-
-              Alterações na Política
-              Esta política pode ser atualizada periodicamente; recomendamos revisão regular.
-
-              Contato
-              Para dúvidas sobre a política de privacidade, entre em contato com nosso suporte.
-            </p>
-          </div>
-          <button style={style.button} onClick={handleCadastrar}>
-            CADASTRAR
+          <textarea
+            style={style.textarea}
+            className="scroll-box"
+            value={politicaPrivacidade}
+            onChange={(e) => setPoliticaPrivacidade(e.target.value)}
+            placeholder="Digite a política de privacidade aqui..."
+            disabled={loadingPrivacy}
+          />
+          <button
+            style={{
+              ...style.button,
+              ...(loadingPrivacy ? style.buttonDisabled : {}),
+            }}
+            onClick={handleCadastrarPrivacidade}
+            disabled={loadingPrivacy}
+          >
+            {loadingPrivacy ? "SALVANDO..." : "SALVAR"}
           </button>
         </div>
       </div>
 
-      <SuccessPopup 
-        message="Cadastro realizado com sucesso!" 
-        trigger={popupTrigger} 
+      <SuccessPopup
+        message="Atualização realizada com sucesso!"
+        trigger={popupTrigger}
       />
 
       <style jsx>{`
@@ -146,6 +192,25 @@ const style: { [key: string]: React.CSSProperties } = {
     marginBottom: "30px",
     color: "#707070",
   },
+  errorBanner: {
+    backgroundColor: "#fee",
+    color: "#c33",
+    padding: "12px 20px",
+    borderRadius: "8px",
+    marginBottom: "20px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  retryButton: {
+    background: "transparent",
+    border: "1px solid #c33",
+    color: "#c33",
+    padding: "6px 12px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "14px",
+  },
   cards: {
     display: "flex",
     justifyContent: "space-between",
@@ -164,7 +229,7 @@ const style: { [key: string]: React.CSSProperties } = {
     marginBottom: "10px",
     color: "#707070",
   },
-  card: {
+  textarea: {
     flex: 1,
     backgroundColor: "#fff",
     border: "1px solid #ddd",
@@ -173,11 +238,13 @@ const style: { [key: string]: React.CSSProperties } = {
     overflowY: "auto",
     marginBottom: "15px",
     maxHeight: "400px",
-  },
-  text: {
+    minHeight: "400px",
     fontSize: "14px",
     color: "#707070",
     lineHeight: "1.6",
+    fontFamily: "Arial, sans-serif",
+    resize: "vertical",
+    outline: "none",
   },
   button: {
     padding: "12px",
@@ -190,5 +257,10 @@ const style: { [key: string]: React.CSSProperties } = {
     textTransform: "uppercase",
     width: "300px",
     margin: "0 auto",
+    transition: "opacity 0.2s",
+  },
+  buttonDisabled: {
+    backgroundColor: "#80e2d9",
+    cursor: "not-allowed",
   },
 };
