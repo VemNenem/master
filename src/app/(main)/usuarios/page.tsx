@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import Sidebar from "../../components/sidebar";
+import React, { useState, useEffect, useCallback } from "react";
 import { Trash2, Loader2 } from "lucide-react";
 import { usuariosService, User } from "../../services/usuariosService";
 
@@ -12,12 +11,7 @@ export default function ListagemUsuarios() {
   const [totalPages, setTotalPages] = useState(1);
   const pageSize = 10;
 
-  // Carrega usuários ao montar o componente
-  useEffect(() => {
-    loadUsers();
-  }, [currentPage]);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -30,7 +24,12 @@ export default function ListagemUsuarios() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  // Carrega usuários ao montar o componente
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const toggleActive = async (user: User) => {
     try {

@@ -224,14 +224,10 @@ export default function RedefinirSenha() {
         setErrorMessage(result.message);
         setShowErrorPopup(true);
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("Erro inesperado. Tente novamente.");
       setShowErrorPopup(true);
     }
-  };
-
-  const closeSuccessPopup = () => {
-    setShowSuccessPopup(false);
   };
 
   // Auto-close success popup after 3 seconds

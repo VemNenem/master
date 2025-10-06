@@ -9,7 +9,7 @@ export interface Post {
         name: string;
         alternativeText?: string | null;
         url: string;
-        formats?: any;
+        formats?: Record<string, unknown>;
         width?: number;
         height?: number;
     };

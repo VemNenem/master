@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Trash2, Plus } from "lucide-react";
 import PostagemModal from "./../../components/postagemModal"; // ajuste o caminho
 import { carregarPosts, criarPost, deletarPost, Post } from "@/app/services/blogService"; // ajuste o caminho
@@ -103,10 +104,12 @@ export default function Blog() {
           posts.map((post) => (
             <div key={post.documentId} style={styles.postCard}>
               {post.image ? (
-                <img
+                <Image
                   src={post.image.url ? `https://api.vemnenem.app.br${post.image.url}` : ""}
                   alt={post.title}
                   style={styles.postImage}
+                  width={post.image.width || 400}
+                  height={post.image.height || 300}
                 />
               ) : (
                 <div style={styles.placeholderImage}>

@@ -59,7 +59,7 @@ export default function PostagemModal({ isOpen, onClose, onSubmit }: PostagemMod
             } else {
                 setError(result.message || "Erro ao cadastrar postagem");
             }
-        } catch (err) {
+        } catch {
             setError("Erro ao cadastrar postagem");
         } finally {
             setLoading(false);

@@ -42,7 +42,7 @@ export default function CadastroModal({ isOpen, onClose, onSubmit }: CadastroMod
       } else {
         setError(result.message || "Erro ao cadastrar usuário");
       }
-    } catch (err) {
+    } catch {
       setError("Erro ao cadastrar usuário");
     } finally {
       setLoading(false);
