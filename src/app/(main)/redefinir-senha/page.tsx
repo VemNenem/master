@@ -191,13 +191,13 @@
 
 
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SuccessPopup from "../../components/sucessPopup";
 import ErrorPopup from "../../components/errorPopup";
 import { redefinirSenha } from "./../../services/redefinirSenhaService";
 
 export default function RedefinirSenha() {
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successTrigger, setSuccessTrigger] = useState(0);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
@@ -213,12 +213,42 @@ export default function RedefinirSenha() {
     });
   };
 
+  const validatePassword = (password: string): boolean => {
+    // Pelo menos 8 caracteres
+    if (password.length < 8) return false;
+
+    // Pelo menos 1 letra minúscula
+    if (!/[a-z]/.test(password)) return false;
+
+    // Pelo menos 1 letra maiúscula
+    if (!/[A-Z]/.test(password)) return false;
+
+    // Pelo menos 1 caractere especial
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return false;
+
+    return true;
+  };
+
   const handleCadastrar = async () => {
     try {
+      // Validação da nova senha
+      if (!validatePassword(formData.password)) {
+        setErrorMessage("A senha deve ter pelo menos 8 caracteres, incluindo 1 letra minúscula, 1 maiúscula e 1 caractere especial.");
+        setShowErrorPopup(true);
+        return;
+      }
+
+      // Validação de confirmação de senha
+      if (formData.password !== formData.passwordConfirmation) {
+        setErrorMessage("As senhas não coincidem.");
+        setShowErrorPopup(true);
+        return;
+      }
+
       const result = await redefinirSenha(formData);
 
       if (result.success) {
-        setShowSuccessPopup(true);
+        setSuccessTrigger(prev => prev + 1);
         setFormData({ currentPassword: "", password: "", passwordConfirmation: "" });
       } else {
         setErrorMessage(result.message);
@@ -230,15 +260,7 @@ export default function RedefinirSenha() {
     }
   };
 
-  // Auto-close success popup after 3 seconds
-  useEffect(() => {
-    if (showSuccessPopup) {
-      const timer = setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [showSuccessPopup]);
+  // Remove o useEffect que não é mais necessário
 
   const style = {
     container: {
@@ -322,9 +344,9 @@ export default function RedefinirSenha() {
         <ul style={style.rules}>
           <li>Use pelo menos 8 caracteres</li>
           <li>
-  Inclua pelo menos 1 letra minúscula, 1 maiúscula e 1 caractere
-  especial, como &quot;-!*&quot;
-</li>
+            Inclua pelo menos 1 letra minúscula, 1 maiúscula e 1 caractere
+            especial, como &quot;-!*&quot;
+          </li>
           <li>Certifique-se de usar uma senha forte</li>
         </ul>
         <label style={style.label}>Confirmar nova senha</label>
@@ -341,12 +363,10 @@ export default function RedefinirSenha() {
         </button>
       </div>
 
-      {showSuccessPopup && (
-        <SuccessPopup
-          message="Senha atualizada com sucesso!"
-          trigger={showSuccessPopup ? 1 : 0}
-        />
-      )}
+      <SuccessPopup
+        message="Senha atualizada com sucesso!"
+        trigger={successTrigger}
+      />
 
       {showErrorPopup && (
         <ErrorPopup
