@@ -1,3 +1,6 @@
+import apiClient from "./apiClient";
+import { AxiosError } from "axios";
+
 export interface Termo {
     id: number;
     documentId: string;
@@ -13,9 +16,11 @@ export interface TermoFormData {
 
 export type TermoType = "privacy" | "use";
 
-const API_BASE = "https://api.vemnenem.app.br/api";
-
-const getToken = () => localStorage.getItem("token"); // ou sessionStorage
+interface ErrorResponse {
+    error?: {
+        message?: string;
+    };
+}
 
 /**
  * Lista os termos por tipo
@@ -23,20 +28,8 @@ const getToken = () => localStorage.getItem("token"); // ou sessionStorage
  */
 export async function listarTermos(type: TermoType): Promise<Termo | null> {
     try {
-        const response = await fetch(`${API_BASE}/listTerms?type=${type}`, {
-            headers: {
-                "Authorization": `Bearer ${getToken()}`,
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            console.error("Erro ao carregar termos:", response.status);
-            return null;
-        }
-
-        const data = await response.json();
-        return data || null;
+        const response = await apiClient.get<Termo>(`/listTerms?type=${type}`);
+        return response.data || null;
     } catch (error) {
         console.error("Erro na requisição:", error);
         return null;
@@ -53,30 +46,12 @@ export async function atualizarTermos(
     formData: TermoFormData
 ): Promise<{ success: boolean; message?: string }> {
     try {
-        const response = await fetch(`${API_BASE}/updateTerms?type=${type}`, {
-            method: "PUT",
-            headers: {
-                "Authorization": `Bearer ${getToken()}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        });
-
-        if (!response.ok) {
-            let errorMessage = `Erro ${response.status}`;
-            try {
-                const errorData = await response.json();
-                errorMessage = errorData?.error?.message || errorMessage;
-            } catch {
-                // se não conseguir parsear o json, fica só o status
-            }
-
-            return { success: false, message: errorMessage };
-        }
-
+        await apiClient.put(`/updateTerms?type=${type}`, formData);
         return { success: true };
     } catch (error) {
         console.error("Erro na requisição:", error);
-        return { success: false, message: "Erro de rede ou servidor indisponível." };
+        const axiosError = error as AxiosError<ErrorResponse>;
+        const errorMessage = axiosError?.response?.data?.error?.message || "Erro de rede ou servidor indisponível.";
+        return { success: false, message: errorMessage };
     }
 }

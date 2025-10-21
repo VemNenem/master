@@ -1,32 +1,23 @@
+import apiClient from "./apiClient";
+import { AxiosError } from "axios";
+
 export interface RedefinirSenhaPayload {
     currentPassword: string;
     password: string;
     passwordConfirmation: string;
 }
 
+interface ErrorResponse {
+    error?: {
+        message?: string;
+    };
+}
+
 export async function redefinirSenha(
     data: RedefinirSenhaPayload
 ): Promise<{ success: boolean; message: string }> {
     try {
-        const token = localStorage.getItem("token");
-
-        const response = await fetch("https://api.vemnenem.app.br/api/auth/change-password", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            return {
-                success: false,
-                message: result?.error?.message || "Erro ao redefinir a senha.",
-            };
-        }
+        await apiClient.post("/auth/change-password", data);
 
         return {
             success: true,
@@ -34,9 +25,11 @@ export async function redefinirSenha(
         };
     } catch (error) {
         console.error("Erro na requisição:", error);
+        const axiosError = error as AxiosError<ErrorResponse>;
+        const errorMessage = axiosError?.response?.data?.error?.message || "Erro ao redefinir a senha.";
         return {
             success: false,
-            message: "Erro de conexão. Tente novamente.",
+            message: errorMessage,
         };
     }
 }

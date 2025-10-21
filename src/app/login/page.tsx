@@ -14,7 +14,6 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [bgLoaded, setBgLoaded] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function Login() {
       const response = await fetch(`${API_URL}/api/auth/local`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: email, password }),
+        body: JSON.stringify({ identifier: email, password, role: 3 }),
       });
 
       const data = await response.json();
@@ -41,14 +40,13 @@ export default function Login() {
         if (data?.error?.message?.includes("Invalid identifier")) {
           setErrors({ email: "Email inválido", password: "Senha inválida" });
         } else {
-          setErrors({ email: "Erro no login. Verifique suas credenciais.", password: "Erro no login. Verifique suas credenciais.",});
+          setErrors({ email: "Erro no login. Verifique suas credenciais.", password: "Erro no login. Verifique suas credenciais.", });
         }
         throw new Error(data.error?.message || "Erro ao fazer login");
       }
 
       localStorage.setItem("token", data.jwt);
       localStorage.setItem("user", JSON.stringify(data.user));
-      if (rememberMe) localStorage.setItem("rememberMe", "true");
 
       setTimeout(() => router.push("/usuarios"), 500);
     } catch (error) {
@@ -125,18 +123,6 @@ export default function Login() {
                 {errors.password && (
                   <span style={styles.errorText}>{errors.password}</span>
                 )}
-              </div>
-
-              <div style={styles.optionsRow}>
-                <label style={styles.checkboxLabel}>
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    style={styles.checkbox}
-                  />
-                  Lembrar-me
-                </label>
               </div>
 
               <button
@@ -242,20 +228,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: "4px",
     display: "block",
   },
-  optionsRow: {
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: "12px",
-  },
-  checkboxLabel: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: "13px",
-    color: "#4b5563",
-    gap: "6px",
-  },
-  checkbox: { width: "16px", height: "16px" },
   logoContainer: {
     display: "flex",
     alignItems: "center",

@@ -1,6 +1,4 @@
-const API_BASE = "https://api.vemnenem.app.br/api";
-
-const getToken = () => localStorage.getItem("token");
+import apiClient from "./apiClient";
 
 export interface User {
     username: string;
@@ -34,80 +32,28 @@ export const usuariosService = {
      * Lista usuários com paginação
      */
     async listUsers(page: number = 1, pageSize: number = 10): Promise<ListUsersResponse> {
-        const token = getToken();
-
-        if (!token) {
-            throw new Error("Token não encontrado");
-        }
-
-        const response = await fetch(
-            `${API_BASE}/listUsersInMaster?page=${page}&pageSize=${pageSize}`,
-            {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
+        const response = await apiClient.get<ListUsersResponse>(
+            `/listUsersInMaster?page=${page}&pageSize=${pageSize}`
         );
-
-        if (!response.ok) {
-            throw new Error(`Erro ao listar usuários: ${response.statusText}`);
-        }
-
-        return await response.json();
+        return response.data;
     },
 
     /**
      * Deleta um usuário pelo documentId
      */
     async deleteUser(userDocumentId: string): Promise<void> {
-        const token = getToken();
-
-        if (!token) {
-            throw new Error("Token não encontrado");
-        }
-
-        const response = await fetch(
-            `${API_BASE}/deleteUserInMaster?userDocumentId=${userDocumentId}`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
+        await apiClient.delete(
+            `/deleteUserInMaster?userDocumentId=${userDocumentId}`
         );
-
-        if (!response.ok) {
-            throw new Error(`Erro ao deletar usuário: ${response.statusText}`);
-        }
     },
 
     /**
      * Bloqueia ou desbloqueia um usuário
      */
     async toggleBlockUser(userDocumentId: string, blocked: boolean): Promise<void> {
-        const token = getToken();
-
-        if (!token) {
-            throw new Error("Token não encontrado");
-        }
-
-        const response = await fetch(
-            `${API_BASE}/blockAndUnblockUser?userDocumentId=${userDocumentId}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ blocked }),
-            }
+        await apiClient.patch(
+            `/blockAndUnblockUser?userDocumentId=${userDocumentId}`,
+            { blocked }
         );
-
-        if (!response.ok) {
-            throw new Error(`Erro ao atualizar status do usuário: ${response.statusText}`);
-        }
     },
 };

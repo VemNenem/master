@@ -2,12 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 
 export default function Sidebar() {
   const router = useRouter();
 
   const handleLogout = () => {
+    // Limpa os tokens do localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+
     console.log("Usuário deslogado");
     router.push("/");
   };
@@ -16,9 +20,9 @@ export default function Sidebar() {
     <aside style={style.sidebar}>
 
       <div style={style.logoContainer}>
-        <Image 
-          src={logo} 
-          alt="Logo" 
+        <Image
+          src={logo}
+          alt="Logo"
           width={100}
           height={100}
           priority
@@ -27,32 +31,32 @@ export default function Sidebar() {
 
       {/* Links */}
       <nav style={style.nav}>
-        <button 
-          style={style.link} 
+        <button
+          style={style.link}
           onClick={() => router.push("/usuarios")}
         >
           Listagem de usuários
         </button>
-        <button 
-          style={style.link} 
+        <button
+          style={style.link}
           onClick={() => router.push("/blog")}
         >
           Blog
         </button>
-        <button 
-          style={style.link} 
+        <button
+          style={style.link}
           onClick={() => router.push("/redefinir-senha")}
         >
           Redefinir senha
         </button>
-        <button 
-          style={style.link} 
+        <button
+          style={style.link}
           onClick={() => router.push("/termo-uso")}
         >
           Termo de uso
         </button>
-        <button 
-          style={style.link} 
+        <button
+          style={style.link}
           onClick={() => router.push("/equipe")}
         >
           Equipe
@@ -60,9 +64,9 @@ export default function Sidebar() {
       </nav>
 
       <div style={style.footer}>
-        <button 
-          style={style.logout} 
-          onClick={handleLogout} 
+        <button
+          style={style.logout}
+          onClick={handleLogout}
         >
           Sair da conta
         </button>
