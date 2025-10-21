@@ -1,21 +1,16 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function SuccessPopup({ message, showBackground = true, trigger }) {
   const [isOpen, setIsOpen] = useState(false);
-  const firstRender = useRef(true);
 
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
+    // Só mostra o popup se o trigger for maior que 0
+    if (trigger > 0 && message) {
+      setIsOpen(true);
+      const timer = setTimeout(() => setIsOpen(false), 2000);
+      return () => clearTimeout(timer);
     }
-
-    if (!message) return;
-
-    setIsOpen(true);
-    const timer = setTimeout(() => setIsOpen(false), 2000);
-    return () => clearTimeout(timer);
   }, [trigger, message]);
 
   if (!isOpen) return null;
