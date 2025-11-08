@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Trash2, Plus } from "lucide-react";
 import CadastroModal from "./../../components/cadastromodal";
 import { carregarUsuarios, criarUsuario, deletarUsuario, Usuario, FormData } from "@/app/services/equipeService";
+import { maskEmail } from "../../utils/emailUtils";
 
 export default function Equipe() {
   const [team, setTeam] = useState<Usuario[]>([]);
@@ -107,7 +108,7 @@ export default function Equipe() {
             team.map((member) => (
               <div key={member.documentId} style={style.row}>
                 <span>{member.username}</span>
-                <span>{member.email}</span>
+                <span>{maskEmail(member.email)}</span>
                 <div style={style.actions}>
                   <button
                     style={style.trashButton}

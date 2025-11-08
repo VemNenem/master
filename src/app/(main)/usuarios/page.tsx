@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Trash2, Loader2 } from "lucide-react";
 import { usuariosService, User } from "../../services/usuariosService";
+import { maskEmail } from "../../utils/emailUtils";
 
 export default function ListagemUsuarios() {
   const [users, setUsers] = useState<User[]>([]);
@@ -96,8 +97,8 @@ export default function ListagemUsuarios() {
               ) : (
                 users.map((user) => (
                   <div key={user.documentId} style={style.row}>
-                    <span>{user.username}</span>
-                    <span>{user.email}</span>
+                    <span>{user.client.name}</span>
+                    <span>{maskEmail(user.email)}</span>
                     <div style={style.switchContainer}>
                       <div
                         style={style.switch(!user.blocked)}

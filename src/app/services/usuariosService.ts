@@ -15,6 +15,25 @@ export interface User {
     updatedAt: string;
     publishedAt: string;
     locale: string | null;
+    client: UserClient;
+}
+
+export interface UserClient {
+    id: number;
+    documentId: string;
+    name: string;
+    probableDateOfDelivery: string;
+    babyGender: string;
+    fatherName: string;
+    babyName: string;
+    acceptTerm: boolean;
+    acceptTermDate: string;
+    acceptPrivacyPolicies: boolean;
+    acceptPrivacyPoliciesDate: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    locale: string | null;
 }
 
 export interface ListUsersResponse {
