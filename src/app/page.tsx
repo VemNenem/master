@@ -27,7 +27,7 @@ export default function Home() {
         </div>
         <div style={styles.heroOverlay2}>
           <div style={styles.mockup}>
-            <Image src={logo} alt="Logo" width={600} height={600} />
+            <Image src={logo} alt="Logo" width={400} height={400} />
           </div>
         </div>
       </section>
@@ -71,7 +71,7 @@ export default function Home() {
         </div>
         <div style={styles.heroOverlay2}>
           <div style={styles.mockup}>
-            <Image src={Blog} alt="Blog" width={600} height={600} />
+            <Image src={Blog} alt="Blog" width={400} height={400} />
           </div>
         </div>
       </section>
