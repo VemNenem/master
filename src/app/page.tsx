@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import logo from "./assets/logo.png";
+import Blog from "./assets/blogicon.png";
 import heroImg from "./assets/header.png";
 import mockup from "./assets/mockup.png";
 import lojas from "./assets/lojas.png";
@@ -12,19 +13,6 @@ export default function Home() {
   const router = useRouter();
   return (
     <main style={styles.container}>
-
-      <header style={styles.navbar}>
-        <div style={styles.logoContainer}>
-          <Image src={logo} alt="Logo" width={60} height={60} />
-        </div>
-          <button
-            style={styles.ctaShop}
-            onClick={() => router.push("/login")} 
-          >
-            Entrar
-          </button>
-      </header>
-
 
       <section style={{ ...styles.hero, backgroundImage: `url(${heroImg.src})` }}>
         <div style={styles.heroOverlay}>
@@ -37,7 +25,14 @@ export default function Home() {
             Com nosso app você consegue de maneira fácil e intuitiva.
           </p>
         </div>
+        <div style={styles.heroOverlay2}>
+          <div style={styles.mockup}>
+            <Image src={logo} alt="Logo" width={600} height={600} />
+          </div>
+        </div>
       </section>
+
+
 
       <section id="features" style={styles.features}>
         <h2 style={styles.sectionTitle}>As principais funcionalidades na palma da sua mão</h2>
@@ -60,6 +55,26 @@ export default function Home() {
         </div>
       </section>
 
+      <section style={{ ...styles.hero, backgroundImage: `url(${heroImg.src})` }}>
+        <div style={styles.heroOverlay}>
+          <h1 style={styles.heroTitle}>
+            Faça parte do nosso blog
+          </h1>
+          <p style={styles.heroSubtitle}>
+            Entre em contato conosco e divulgue seus artigos dentro do nosso{" "}
+            <strong>blog de autoajuda</strong>. Compartilhe suas experiências,
+            ajude outras mães e faça parte da nossa comunidade, por um valor simbólico!
+          </p>
+          <p style={styles.heroSubtitle}>
+            <strong>contato@vemnenem.app.br</strong>
+          </p>
+        </div>
+        <div style={styles.heroOverlay2}>
+          <div style={styles.mockup}>
+            <Image src={Blog} alt="Blog" width={600} height={600} />
+          </div>
+        </div>
+      </section>
 
       <section style={styles.downloadSection}>
         <h2 style={styles.sectionTitle2}>Baixe nosso app nas lojas</h2>
@@ -177,7 +192,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: "center",
     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
   },
-   featureCardPlan: {
+  featureCardPlan: {
     backgroundColor: "#42CFE0",
     padding: "30px",
     borderRadius: "15px",
@@ -190,7 +205,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontWeight: "bold",
     marginBottom: "15px",
   },
-    featureTitlePlan: {
+  featureTitlePlan: {
     fontSize: "20px",
     fontWeight: "bold",
     marginBottom: "15px",
@@ -200,7 +215,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: "14px",
     color: "#555",
   },
-    featureDescriptionPlan: {
+  featureDescriptionPlan: {
     fontSize: "14px",
     color: "#ffffffff",
   },
@@ -209,19 +224,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50%',      
+    width: '50%',
     padding: '50px',
     margin: '50px auto',
-    borderRadius: '15px', 
-    textAlign: 'center', 
-    boxShadow: '0 4px 10px rgba(0,0,0,0.1)', 
-    backgroundColor: '#42CFE0', 
+    borderRadius: '15px',
+    textAlign: 'center',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+    backgroundColor: '#42CFE0',
   },
   downloadText: {
     fontSize: "16px",
     marginTop: "20px",
     color: "#ffffff",
-    fontWeight:"bold",
+    fontWeight: "bold",
   },
   footer: {
     marginTop: "80px",
