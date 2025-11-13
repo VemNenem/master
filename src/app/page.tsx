@@ -14,6 +14,15 @@ export default function Home() {
   return (
     <main style={styles.container}>
 
+      <header style={styles.header}>
+        <p
+          style={styles.headerText}
+          onClick={() => router.push("/login-admin")}
+        >
+          Área do administrador
+        </p>
+      </header>
+
       <section style={{ ...styles.hero, backgroundImage: `url(${heroImg.src})` }}>
         <div style={styles.heroOverlay}>
           <h1 style={styles.heroTitle}>
@@ -245,5 +254,29 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderTop: "1px solid #eee",
     color: "#888",
     fontSize: "14px",
+  },
+  header: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    backgroundColor: "#ffffffff",
+    color: "#42CFE0",
+    padding: "30px 30px",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    fontWeight: "1",
+    zIndex: 1000,
+    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+    cursor: "pointer",
+  },
+  headerText: {
+    margin: 0,
+    fontSize: "16px",
+    transition: "opacity 0.3s ease",
+  },
+  headerTextHover: {
+    opacity: 0.8,
   },
 };
