@@ -16,6 +16,11 @@ body {
   overflow-x: hidden;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden; 
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
