@@ -1,5 +1,4 @@
-import apiClient from "./apiClient";
-import { usuariosService, ListUsersResponse } from "./usuariosService";
+import { usuariosService } from "./usuariosService";
 import { carregarPosts, Post } from "./blogService";
 
 export interface DashboardStats {
@@ -71,7 +70,7 @@ export const dashboardService = {
 
             // Define a data inicial baseada no período
             const now = new Date();
-            let startDate = new Date();
+            const startDate = new Date();
             let groupBy: "day" | "week" | "month" = "day";
 
             switch (period) {
@@ -113,7 +112,7 @@ export const dashboardService = {
      * Agrupa usuários por período (dia, semana ou mês)
      */
     groupUsersByPeriod(
-        users: any[], 
+        users: { createdAt: string }[],
         groupBy: "day" | "week" | "month",
         startDate: Date,
         endDate: Date

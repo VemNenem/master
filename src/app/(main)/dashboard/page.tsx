@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Users, FileText, UserCheck, UserX, Loader2 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { dashboardService, DashboardStats } from "../../services/dashboardService";
+import { dashboardService, DashboardStats, GrowthDataPoint } from "../../services/dashboardService";
 
 interface StatCard {
     title: string;
@@ -19,7 +20,7 @@ export default function Dashboard() {
     const [error, setError] = useState<string | null>(null);
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [statCards, setStatCards] = useState<StatCard[]>([]);
-    const [growthData, setGrowthData] = useState<any[]>([]);
+    const [growthData, setGrowthData] = useState<GrowthDataPoint[]>([]);
     const [selectedPeriod, setSelectedPeriod] = useState<PeriodFilter>("30d");
     const [loadingChart, setLoadingChart] = useState(false);
 
@@ -31,6 +32,7 @@ export default function Dashboard() {
         if (stats) {
             loadGrowthData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedPeriod, stats]);
 
     const loadDashboardData = async () => {
@@ -181,7 +183,7 @@ export default function Dashboard() {
                                     ))}
                                 </div>
                             </div>
-                            
+
                             {loadingChart ? (
                                 <div style={style.chartLoading}>
                                     <Loader2 size={30} style={{ animation: "spin 1s linear infinite" }} />
@@ -190,16 +192,16 @@ export default function Dashboard() {
                                 <ResponsiveContainer width="100%" height={300}>
                                     <LineChart data={growthData}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                                        <XAxis 
-                                            dataKey="date" 
+                                        <XAxis
+                                            dataKey="date"
                                             stroke="#999"
                                             style={{ fontSize: '12px' }}
                                         />
-                                        <YAxis 
+                                        <YAxis
                                             stroke="#999"
                                             style={{ fontSize: '12px' }}
                                         />
-                                        <Tooltip 
+                                        <Tooltip
                                             contentStyle={{
                                                 backgroundColor: 'white',
                                                 border: '1px solid #e0e0e0',
@@ -208,10 +210,10 @@ export default function Dashboard() {
                                             }}
                                             labelStyle={{ color: '#333', fontWeight: 'bold' }}
                                         />
-                                        <Line 
-                                            type="monotone" 
-                                            dataKey="users" 
-                                            stroke="#42CFEA" 
+                                        <Line
+                                            type="monotone"
+                                            dataKey="users"
+                                            stroke="#42CFEA"
                                             strokeWidth={2}
                                             dot={{ fill: '#42CFEA', r: 4 }}
                                             activeDot={{ r: 6 }}
@@ -278,9 +280,11 @@ export default function Dashboard() {
                                             return (
                                                 <div key={post.documentId} style={style.activityItem}>
                                                     {imageUrl ? (
-                                                        <img
+                                                        <Image
                                                             src={imageUrl}
                                                             alt={post.image?.alternativeText || post.title}
+                                                            width={60}
+                                                            height={60}
                                                             style={style.postImage}
                                                             onError={(e) => {
                                                                 e.currentTarget.style.display = 'none';
@@ -331,8 +335,8 @@ const style = {
         color: "#707070",
         height: "100vh",
         overflowY: "auto",
-            scrollbarWidth: "none",            
-    msOverflowStyle: "none", 
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
     },
     title: {
         fontSize: "22px",
