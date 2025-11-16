@@ -61,12 +61,6 @@ export default function Sidebar() {
         >
           Equipe
         </button>
-                <button
-          style={style.link}
-          onClick={() => router.push("/dashboard")}
-        >
-          Dashboard
-        </button>
       </nav>
 
       <div style={style.footer}>
