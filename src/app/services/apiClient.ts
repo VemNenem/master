@@ -45,7 +45,7 @@ apiClient.interceptors.response.use(
 
             // Redireciona para a tela de login
             if (typeof window !== "undefined") {
-                window.location.href = "/login";
+                window.location.href = "/login-admin";
             }
         }
 
