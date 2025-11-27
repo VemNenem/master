@@ -98,7 +98,7 @@ export default function PostagemModal({ isOpen, onClose, onSubmit }: PostagemMod
                     type="text"
                     value={titulo}
                     onChange={(e) => setTitulo(e.target.value)}
-                    placeholder="Práticas na maternidade"
+                    placeholder=""
                     style={styles.input}
                     disabled={loading}
                 />
@@ -107,7 +107,7 @@ export default function PostagemModal({ isOpen, onClose, onSubmit }: PostagemMod
                 <textarea
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}
-                    placeholder="Lorem ipsum dolor sit amet..."
+                    placeholder=""
                     style={styles.textarea}
                     disabled={loading}
                     rows={6}
@@ -118,7 +118,7 @@ export default function PostagemModal({ isOpen, onClose, onSubmit }: PostagemMod
                     type="text"
                     value={autor}
                     onChange={(e) => setAutor(e.target.value)}
-                    placeholder="Bryan Henrique"
+                    placeholder=""
                     style={styles.input}
                     disabled={loading}
                 />

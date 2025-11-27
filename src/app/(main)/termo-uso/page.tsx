@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import SuccessPopup from "../../components/sucessPopup";
-import { listarTermos, atualizarTermos } from "@/app/services/termoService"; // ajuste o caminho
+import { listarTermos, atualizarTermos } from "@/app/services/termoService";
 
 export default function TermoPage() {
   const [popupTrigger, setPopupTrigger] = useState(0);

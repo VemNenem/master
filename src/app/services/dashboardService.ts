@@ -26,7 +26,7 @@
 //         try {
 //             // Busca dados em paralelo para melhor performance
 //             const [usersResponse, posts] = await Promise.all([
-//                 usuariosService.listUsers(1, 1000), // Busca todos os usuários (ajuste o pageSize conforme necessário)
+//                 usuariosService.listUsers(1, 1000),
 //                 carregarPosts(),
 //             ]);
 

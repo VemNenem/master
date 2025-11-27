@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { FormData } from "@/app/services/equipeService"; // ajuste o caminho
+import { FormData } from "@/app/services/equipeService";
 
 interface CadastroModalProps {
   isOpen: boolean;
@@ -75,7 +75,7 @@ export default function CadastroModal({ isOpen, onClose, onSubmit }: CadastroMod
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Bryan"
+          placeholder=""
           style={styles.input}
           disabled={loading}
         />
@@ -85,7 +85,7 @@ export default function CadastroModal({ isOpen, onClose, onSubmit }: CadastroMod
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="usuario@gmail.com"
+          placeholder=""
           style={styles.input}
           disabled={loading}
         />
@@ -96,7 +96,7 @@ export default function CadastroModal({ isOpen, onClose, onSubmit }: CadastroMod
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
+            placeholder=""
             style={styles.input}
             disabled={loading}
           />
