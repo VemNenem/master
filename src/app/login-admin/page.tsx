@@ -75,7 +75,7 @@ export default function Login() {
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value.toLowerCase())}
                   required
                   placeholder=""
                   style={{
@@ -113,7 +113,10 @@ export default function Login() {
                   />
                   <button
                     type="button"
-                    style={styles.toggle}
+                    style={{
+                      ...styles.toggle,
+                      color: "#000",
+                    }}
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
                   >

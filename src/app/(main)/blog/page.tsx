@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Trash2, Plus } from "lucide-react";
-import PostagemModal from "./../../components/postagemModal"; // ajuste o caminho
-import { carregarPosts, criarPost, deletarPost, Post } from "@/app/services/blogService"; // ajuste o caminho
+import PostagemModal from "./../../components/postagemModal";
+import { carregarPosts, criarPost, deletarPost, Post } from "@/app/services/blogService";
 
 export default function Blog() {
   const [posts, setPosts] = useState<Post[]>([]);
